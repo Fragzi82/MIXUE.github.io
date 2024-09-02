@@ -1,0 +1,37 @@
+document.addEventListener("DOMContentLoaded", function() {
+    const loginForm = document.getElementById('login-form');
+    const claimContainer = document.getElementById('claim-container');
+    const userNameSpan = document.getElementById('user-name');
+    const claimButton = document.getElementById('claim-button');
+    const claimMessage = document.getElementById('claim-message');
+
+    // Check if user has already logged in today
+    const lastLogin = localStorage.getItem('lastLogin');
+    const today = new Date().toLocaleDateString();
+
+    if (lastLogin === today) {
+        showClaimContainer();
+    }
+
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        localStorage.setItem('username', username);
+        localStorage.setItem('lastLogin', today);
+        showClaimContainer();
+    });
+
+    claimButton.addEventListener('click', function() {
+        claimButton.disabled = true;
+        claimMessage.classList.remove('hidden');
+    });
+
+    function showClaimContainer() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            userNameSpan.textContent = username;
+            document.querySelector('.login-container').classList.add('hidden');
+            claimContainer.classList.remove('hidden');
+        }
+    }
+});
